@@ -18,7 +18,6 @@ class ChacheManager {
         let imageUrlString = url.absoluteString
         if let cachedImage = imageCache.object(forKey: imageUrlString as NSString) {
             completion(cachedImage)
-            print("CHACHE WORKED")
             return
         }
         DispatchQueue.global(qos: .userInitiated).async {
@@ -27,8 +26,13 @@ class ChacheManager {
                 return
             }
             DispatchQueue.main.async {
+                self.imageCache.setObject(image, forKey: imageUrlString as NSString)
                 completion(image)
             }
         }
+    }
+    
+    func clear() {
+        imageCache.removeAllObjects()
     }
 }

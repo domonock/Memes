@@ -31,11 +31,12 @@ extension MessagesViewController: UICollectionViewDelegate {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let conversation = activeConversation else { return }
         if let imageUrl = self.searchItems[indexPath.row].data.url {
-            chache.fillImage(from: URL(string: imageUrl)!) { image in
+            chache.fillImage(from: URL(string: imageUrl)!) {[weak self] image in
                 let message = MSMessage()
                 let layout = MSMessageTemplateLayout()
                 layout.image = image
                 message.layout = layout
+                self?.requestPresentationStyle(.compact)
                 conversation.insert(message)
             }
         }
